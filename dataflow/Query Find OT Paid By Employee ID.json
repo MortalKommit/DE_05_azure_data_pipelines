@@ -1,0 +1,20 @@
+{
+	"name": "Query Find OT Paid By Employee ID",
+	"properties": {
+		"type": "WranglingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"name": "ds_synapse_payroll_data",
+					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table',\n\tstaged: false) ~>  ds_synapse_payroll_data",
+					"dataset": {
+						"referenceName": "ds_synapse_payroll_data",
+						"type": "DatasetReference"
+					}
+				}
+			],
+			"script": "section Section1;\r\nshared ds_synapse_payroll_data = let AdfDoc = Sql.Database(\"synapse-nyc-payroll2.sql.azuresynapse.net\", \"dsql_synapse_nyc_payroll2\", [CreateNavigationProperties = false]), InputTable = AdfDoc{[Schema=\"dbo\",Item=\"NYC_Payroll_Data\"]}[Data] in InputTable;\r\nshared UserQuery = let Source = #\"ds_synapse_payroll_data\",\r\n  #\"Grouped rows\" = Table.Group(Source, {\"EmployeeID\"}, {{\"Sum_EmployeeOTPaid\", each List.Sum([TotalOTPaid]), type nullable number}}) in #\"Grouped rows\";\r\n",
+			"documentLocale": "en-us"
+		}
+	}
+}
