@@ -1,0 +1,17 @@
+{
+	"name": "df-nyc-payroll",
+	"properties": {
+		"globalParameters": {
+			"global_param_fiscalyear": {
+				"type": "int",
+				"value": 2020
+			}
+		}
+	},
+	"location": "westus2",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "e394ffcb-1ddb-4830-bed4-fb410755d386",
+		"tenantId": "9b7cbd77-6d6b-4879-8aba-63d7dfb18472"
+	}
+}
