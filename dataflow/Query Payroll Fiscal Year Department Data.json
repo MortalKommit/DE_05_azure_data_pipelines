@@ -1,0 +1,20 @@
+{
+	"name": "Query Payroll Fiscal Year Department Data",
+	"properties": {
+		"type": "WranglingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"name": "ds_table_synapse_nycpayroll_summary",
+					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table',\n\tstaged: false) ~>  ds_table_synapse_nycpayroll_summary",
+					"dataset": {
+						"referenceName": "ds_table_synapse_nycpayroll_summary",
+						"type": "DatasetReference"
+					}
+				}
+			],
+			"script": "section Section1;\r\nshared ds_table_synapse_nycpayroll_summary = let AdfDoc = Sql.Database(\"synapse-nyc-payroll2.sql.azuresynapse.net\", \"dsql_synapse_nyc_payroll2\", [CreateNavigationProperties = false]), InputTable = AdfDoc{[Schema=\"dbo\",Item=\"NYC_Payroll_Summary\"]}[Data] in InputTable;\r\nshared UserQuery = let Source = #\"ds_table_synapse_nycpayroll_summary\" in Source;\r\n",
+			"documentLocale": "en-us"
+		}
+	}
+}
