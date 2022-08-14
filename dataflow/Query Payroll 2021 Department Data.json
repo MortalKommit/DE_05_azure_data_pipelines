@@ -1,5 +1,5 @@
 {
-	"name": "Query Payroll Fiscal Year Department Data",
+	"name": "Query Payroll 2021 Department Data",
 	"properties": {
 		"type": "WranglingDataFlow",
 		"typeProperties": {
@@ -13,7 +13,7 @@
 					}
 				}
 			],
-			"script": "section Section1;\r\nshared ds_table_synapse_nycpayroll_summary = let AdfDoc = Sql.Database(\"synapse-nyc-payroll2.sql.azuresynapse.net\", \"dsql_synapse_nyc_payroll2\", [CreateNavigationProperties = false]), InputTable = AdfDoc{[Schema=\"dbo\",Item=\"NYC_Payroll_Summary\"]}[Data] in InputTable;\r\nshared UserQuery = let Source = #\"ds_table_synapse_nycpayroll_summary\" in Source;\r\n",
+			"script": "section Section1;\r\nshared ds_table_synapse_nycpayroll_summary = let AdfDoc = Sql.Database(\"synapse-nyc-payroll2.sql.azuresynapse.net\", \"dsql_synapse_nyc_payroll2\", [CreateNavigationProperties = false]), InputTable = AdfDoc{[Schema=\"dbo\",Item=\"NYC_Payroll_Summary\"]}[Data] in InputTable;\r\nshared UserQuery = let Source = #\"ds_table_synapse_nycpayroll_summary\",\r\n  #\"Filtered rows\" = Table.SelectRows(Source, each ([FiscalYear] = 2021)) in #\"Filtered rows\";\r\n",
 			"documentLocale": "en-us"
 		}
 	}
